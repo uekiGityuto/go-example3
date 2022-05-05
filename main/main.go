@@ -38,7 +38,6 @@ func input(r io.Reader) <-chan string {
 		for s.Scan() {
 			ch <- s.Text()
 		}
-		close(ch)
 	}()
 	return ch
 }
