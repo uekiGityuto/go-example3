@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"context"
 	"fmt"
 	"io"
 	"math/rand"
@@ -11,19 +10,16 @@ import (
 )
 
 func main() {
-	bc := context.Background()
-	t := 30 * time.Second
-	ctx, cancel := context.WithTimeout(bc, t)
-	defer cancel()
 	ch := input(os.Stdin)
 	questions := []string{"Gorilla", "Monkey", "Human", "GiantGorilla", "Orangutan"}
 	rand.Seed(time.Now().UnixNano())
+	limit := time.After(30 * time.Second)
 	var correctNum int
 	for {
 		question := questions[rand.Intn(len(questions))]
 		fmt.Println(">" + question)
 		select {
-		case <-ctx.Done():
+		case <-limit:
 			fmt.Println("終了時間です。")
 			fmt.Printf("あなたの正解数は、%dです。", correctNum)
 			return
